@@ -1,6 +1,29 @@
 import User from "../model/user.model.js";
+import { jwtmaker } from "../jwt/jwt.js";
 export const login = async (req, res) => {
-  res.send("hi");
+  try {
+    const { email, password } = req.body;
+    const find = await User.findOne({ email });
+    if (!email || !password) {
+      throw new Error("fill out all sections");
+    } else if (!find) {
+      throw new Error("the email doe not exist");
+    } else if (find && (await find.pass(password))) {
+      jwtmaker(find._id, res);
+    }
+
+    res.status(201).json({
+      _id: find._id,
+      username: find.username,
+      gender: find.gender,
+      picture: find.picture,
+    });
+  } catch (err) {
+    res.status(401).json({
+      status: "failed",
+      message: err.message,
+    });
+  }
 };
 export const sigup = async (req, res) => {
   try {
@@ -31,5 +54,16 @@ export const sigup = async (req, res) => {
   }
 };
 export const logout = async (req, res) => {
-  res.send("hi");
+  try {
+    await res.clearCookie("jwt");
+    res.status(201).json({
+      status: "success",
+      message: "logout successfully",
+    });
+  } catch (err) {
+    res.status(201).json({
+      status: "failed",
+      message: "failed logout",
+    });
+  }
 };
