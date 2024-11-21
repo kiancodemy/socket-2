@@ -8,13 +8,13 @@ export const sendmessage = async (req, res) => {
     let findConversation = await Conversation.findOne({
       participants: { $all: [recieverId, userid] },
     });
-    console.log(1, findConversation);
+
     if (!findConversation) {
       findConversation = await Conversation.create({
         participants: [recieverId, userid],
       });
     }
-    console.log(2, findConversation);
+
     const createMeesage = await Message.create({
       sender: userid,
       reciever: recieverId,
@@ -28,6 +28,24 @@ export const sendmessage = async (req, res) => {
     });
   } catch (err) {
     res.status(401).send({
+      message: err.message,
+    });
+  }
+};
+
+export const getMessages = async (req, res) => {
+  try {
+    const userid = req.user._id;
+    const { id: recieverId } = req.params;
+    let findConversation = await Conversation.findOne({
+      participants: { $all: [recieverId, userid] },
+    }).populate("messages");
+    if (!findConversation) {
+      return res.status(201).json([]);
+    }
+    res.status(201).json(findConversation.messages);
+  } catch (err) {
+    res.status(401).json({
       message: err.message,
     });
   }
