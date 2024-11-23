@@ -1,4 +1,4 @@
-import LogoutButton from "../LogoutButton";
+import LogoutButton from "../Logout/LogoutButton";
 import Conversations from "./Conversations";
 import SearchInput from "./SearchInput";
 export default function Sidebar() {

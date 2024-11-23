@@ -1,53 +1,55 @@
 import { signupType } from "../../types/types";
 import Gendercheck from "./Gendercheck";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useState } from "react";
+import { Maincontext } from "../../context/Authcontext";
+import { signUpfucntion } from "../../hooks/Signupfunction";
+
 export default function Signup() {
+  const navigate = useNavigate();
+  const [loading, setloading] = useState(false);
   const [toast, setToast] = useState<{ status: Boolean; message: string }>({
     status: false,
     message: "",
   });
   const [input, setInput] = useState<signupType>({
-    gender: "male",
     username: "",
+    email: "",
     password: "",
     confirm: "",
-    email: "",
+    gender: "male",
   });
 
   const changeGeender = (e: any) => {
     setInput({ ...input, gender: e.target.value });
   };
 
-  const submitFunction = (e: any) => {
+  const submitFunction = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    setloading(true);
     e.preventDefault();
-    for (let [key, value] of Object.entries(input)) {
-      if (!value) {
-        setTimeout(() => {
-          setToast({ status: false, message: "" });
-        }, 3000);
-        setToast({ status: true, message: "you missed " + key });
-
-        setInput({
-          gender: "male",
-          username: "",
-          password: "",
-          confirm: "",
-          email: "",
-        });
-        return true;
-      }
+    const registerResult = await signUpfucntion(input);
+    setloading(false);
+    if (registerResult?.status === "fail") {
+      setToast({ status: true, message: registerResult?.message });
+      setTimeout(() => {
+        setToast({ message: "", status: false });
+      }, 3000);
+      return true;
     }
+    navigate("/auth/login");
   };
+
   return (
     <div className="h-screen flex justify-center items-center">
       {toast.status && (
-        <div className="toast toast-top toast-end">
+        <div className="z-40 toast toast-top toast-end">
           <div className="alert alert-error text-white capitalize">
             <span>{toast.message}</span>
           </div>
         </div>
       )}
-      <form className="flex border-2 rounded-lg bg-opacity-0 gap-y-2 backdrop-blur-md  bg-gray-400 container max-w-[300px] flex-col py-6 px-4 ">
+      <form className="flex border-2 rounded-lg bg-opacity-0 backdrop-blur-md  bg-gray-400 container max-w-[300px] flex-col py-6 px-4 ">
         <div className="text-center">
           <span className="bg-clip-text text-xl capitalize font-bold text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
             Signup chatapp
@@ -100,11 +102,19 @@ export default function Signup() {
         ></Gendercheck>
 
         <button
+          disabled={loading}
           type="submit"
           onClick={submitFunction}
           className="bg-blue-600 py-2 capitalize text-white rounded-md hover:bg-blue-800 duration-700"
         >
           sign up
+        </button>
+        <button className="capitalize mt-2 bg-black py-2 rounded-md hover:bg-black duration-700">
+          <Link to="/auth/login">
+            <span className="bg-clip-text capitalize  text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
+              aleady have acount? login
+            </span>
+          </Link>
         </button>
       </form>
     </div>

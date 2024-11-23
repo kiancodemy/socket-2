@@ -4,9 +4,9 @@ type checker = {
 };
 export default function Gendercheck({ gender, changeGeender }: checker) {
   return (
-    <div className="flex gap-x-3 p-2">
+    <div className="flex gap-x-3 p-2 ">
       <div className="flex gap-x-2">
-        <label className="capitalize">male</label>
+        <label className="capitalize text-white">male</label>
         <input
           onChange={(e) => changeGeender(e)}
           type="radio"
@@ -16,7 +16,7 @@ export default function Gendercheck({ gender, changeGeender }: checker) {
         />
       </div>
       <div className="flex gap-x-2">
-        <label className="capitalize">female</label>
+        <label className="capitalize text-white">female</label>
         <input
           onChange={(e) => changeGeender(e)}
           type="radio"

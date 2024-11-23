@@ -9,6 +9,7 @@ export const jwtmaker = async (id, res) => {
     maxAge: 700 * 24 * 60 * 60 * 1000,
     httpOnly: true,
     secure: process.env.MODE !== "development",
+    sameSite: "strict",
   });
   return token;
 };

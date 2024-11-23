@@ -7,11 +7,18 @@ import userRouter from "./routes/user.routes.js";
 import cors from "cors";
 import dotenv from "dotenv";
 dotenv.config();
-
 const app = express();
+app.use(express.json());
+
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
+
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieparser());
-app.use(cors({ origin: "*", credentials: "true" }));
 
 app.use("/api/auth", authrouter);
 app.use("/api/message", MessageRouter);

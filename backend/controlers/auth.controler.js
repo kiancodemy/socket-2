@@ -45,11 +45,12 @@ export const sigup = async (req, res) => {
     });
     res.status(201).json({
       status: "success",
+      message: "signup successfully",
     });
   } catch (err) {
     res.status(401).json({
       status: "fail",
-      message: err.message,
+      message: err.message || "failed to signup",
     });
   }
 };

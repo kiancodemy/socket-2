@@ -5,3 +5,7 @@ export type signupType = {
   email?: string;
   confirm?: string;
 };
+export type loginType = {
+  email?: string;
+  password?: string;
+};
