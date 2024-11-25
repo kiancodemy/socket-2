@@ -23,11 +23,9 @@ export const sendmessage = async (req, res) => {
 
     findConversation.messages.push(createMeesage._id);
     await findConversation.save();
-    res.status(201).send({
-      status: "success",
-    });
+    res.status(201).json(createMeesage);
   } catch (err) {
-    res.status(401).send({
+    res.status(401).json({
       message: err.message,
     });
   }

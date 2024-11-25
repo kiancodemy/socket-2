@@ -1,6 +1,15 @@
-export default function Message() {
+import { MessageType } from "../../types/types";
+
+import { usestore } from "../../zustand/store/Store";
+
+export default function Message({ item }: { item: MessageType }) {
+  const { conversation } = usestore();
   return (
-    <div className="chat chat-start">
+    <div
+      className={`chat px-2 chat-stary ${
+        item.sender === conversation._id ? "chat-start" : "chat-end"
+      }`}
+    >
       <div className="chat-image avatar">
         <div className="w-10 rounded-full">
           <img
@@ -9,9 +18,7 @@ export default function Message() {
           />
         </div>
       </div>
-      <div className="chat-bubble">
-        It was said that you would, destroy the Sith, not join them.
-      </div>
+      <div className="chat-bubble">{item.message}</div>
     </div>
   );
 }

@@ -85,3 +85,22 @@ export const logoutFunction = async () => {
     return false;
   }
 };
+
+export const getAllMessages = async (id: string) => {
+  try {
+    const PostData = await fetch(`http://localhost:4000/api/message/${id}`, {
+      method: "Get",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    if (PostData.ok) {
+      const data = await PostData.json();
+      return data;
+    }
+    return false;
+  } catch (err) {
+    return false;
+  }
+};

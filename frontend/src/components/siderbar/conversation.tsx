@@ -1,18 +1,27 @@
-export default function conversation() {
+import { UserType } from "../../types/types";
+import { usestore } from "../../zustand/store/Store";
+export default function conversation({ item }: { item: UserType }) {
+  const { conversation, setconversaton } = usestore();
+
   return (
     <div>
-      <div className="hover:bg-blue-700 px-1 flex items-center justify-between rounded-md py-2 text-white">
-        <div className="flex justify-center items-center gap-x-1">
+      <div
+        onClick={() => setconversaton(item)}
+        className={`hover:bg-blue-700 ${
+          conversation?._id === item._id && "bg-blue-700"
+        } cursor-pointer px-1 flex items-center justify-between rounded-md py-2 text-white`}
+      >
+        <div className="flex justify-center items-center gap-x-2">
           <div className="avatar">
             <div className="w-10 rounded-full">
-              <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+              <img src={item.picture} />
             </div>
           </div>
-          <h1>kian</h1>
+          <h1>{item.username}</h1>
         </div>
         <div className="avatar">
           <div className="w-10 rounded-full">
-            <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+            <img src={item.picture} />
           </div>
         </div>
       </div>

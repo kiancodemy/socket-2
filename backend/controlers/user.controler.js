@@ -1,7 +1,9 @@
 import User from "../model/user.model.js";
 export const getAllUser = async (req, res) => {
   try {
-    const find = await User.find({ _id: { $ne: req.user._id } });
+    const find = await User.find({ _id: { $ne: req.user._id } }).select(
+      "-password"
+    );
 
     res.status(201).json(find);
   } catch (err) {
