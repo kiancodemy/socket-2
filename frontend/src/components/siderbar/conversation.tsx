@@ -1,7 +1,10 @@
 import { UserType } from "../../types/types";
 import { usestore } from "../../zustand/store/Store";
+import { Mainsocket } from "../../context/socketContext";
 export default function conversation({ item }: { item: UserType }) {
   const { conversation, setconversaton } = usestore();
+  const { OnlineUsers } = Mainsocket();
+  const isOnline = OnlineUsers?.includes(item._id);
 
   return (
     <div>
@@ -12,17 +15,12 @@ export default function conversation({ item }: { item: UserType }) {
         } cursor-pointer px-1 flex items-center justify-between rounded-md py-2 text-white`}
       >
         <div className="flex justify-center items-center gap-x-2">
-          <div className="avatar">
+          <div className={`avatar ${isOnline ? "online" : "offline"}`}>
             <div className="w-10 rounded-full">
               <img src={item.picture} />
             </div>
           </div>
           <h1>{item.username}</h1>
-        </div>
-        <div className="avatar">
-          <div className="w-10 rounded-full">
-            <img src={item.picture} />
-          </div>
         </div>
       </div>
       <div className="divider"></div>

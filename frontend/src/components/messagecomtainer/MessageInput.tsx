@@ -2,11 +2,16 @@ import { useState } from "react";
 import { FaTelegramPlane } from "react-icons/fa";
 import { useSendMessage } from "../../hooks/sendMessage";
 import { usestore } from "../../zustand/store/Store";
+
 export default function MessageInput() {
   const { conversation } = usestore();
 
   const { loading, SendMessage } = useSendMessage();
   const [Messages, setmessage] = useState("");
+
+  const typing = (e: any) => {
+    setmessage(e.target.value);
+  };
 
   const submitMessage = async () => {
     const SendResult = await SendMessage(conversation._id, {
@@ -26,7 +31,7 @@ export default function MessageInput() {
       <input
         value={Messages}
         type="text"
-        onChange={(e: any) => setmessage(e.target.value)}
+        onChange={typing}
         className="grow p-2 rounded-md focus:outline-none "
         placeholder="type...."
       />

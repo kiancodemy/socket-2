@@ -1,9 +1,10 @@
 import { MessageType } from "../../types/types";
 
 import { usestore } from "../../zustand/store/Store";
-
+import { formatTime } from "../../hooks/Gettime";
 export default function Message({ item }: { item: MessageType }) {
   const { conversation } = usestore();
+
   return (
     <div
       className={`chat px-2 chat-stary ${
@@ -18,7 +19,18 @@ export default function Message({ item }: { item: MessageType }) {
           />
         </div>
       </div>
-      <div className="chat-bubble">{item.message}</div>
+      <div
+        className={`text-white chat-bubble ${
+          item.sender === conversation._id
+            ? "chat-bubble-primary"
+            : "chat-bubble-warning"
+        } `}
+      >
+        {item.message}
+      </div>
+      <div className="chat-footer opacity-50">
+        {item.createdAt && formatTime(item.createdAt)}
+      </div>
     </div>
   );
 }

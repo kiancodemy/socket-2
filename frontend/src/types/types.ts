@@ -24,6 +24,8 @@ export type UserType = {
 export type MessageType = {
   message: string;
 
+  createdAt: string;
+
   reciever: string;
 
   sender: string;
